@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	VERSION = "glisten v1.0"
+	VERSION = "glisten v1.0.1"
 )
 
 type Message struct {
