@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+const (
+	VERSION = "glisten v1.0"
+)
+
 // Dump an irc message to the log
 func PrintEvent(e *irc.Event) {
 	channel := e.Arguments[0]
