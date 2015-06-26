@@ -2,11 +2,15 @@
 
 IRC listener that streams a single channel to STDOUT
 
-# usage
-![http://i.imgur.com/FHu4zNU.png](usage demo image)
+## usage
+![usage demo image](http://i.imgur.com/FHu4zNU.png)
 
-`glisten "irc.freenode.net:6667" bot_nick_here bot_name_here "#channel_name"`
+`$ glisten "irc.freenode.net:6667" bot_nick_here bot_name_here "#channel_name"`
 
-# Contributors
+## install
+
+`go get -u github.com/dpritchett/glisten`
+
+## Contributors
 
 * Daniel Pritchett <dpritchett@gmail.com>
