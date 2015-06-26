@@ -3,7 +3,7 @@
 IRC listener that streams a single channel to STDOUT
 
 ## usage
-![usage demo image](http://i.imgur.com/FHu4zNU.png)
+![usage demo screenshot](http://i.imgur.com/rcJhBWp.png)
 
 `$ glisten "irc.freenode.net:6667" bot_nick_here bot_name_here "#channel_name"`
 
