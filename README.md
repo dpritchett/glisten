@@ -19,6 +19,10 @@ So you can log public IRC channels to STDOUT using a daemonized oneliner
 
 `go get -u github.com/dpritchett/glisten`
 
+### prebuilt downloads for Linux, OS X, and Windows
+
+* [https://github.com/dpritchett/glisten/releases](https://github.com/dpritchett/glisten/releases)
+
 ## contributors
 
 * Daniel Pritchett <dpritchett@gmail.com>
