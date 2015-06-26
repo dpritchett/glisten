@@ -3,26 +3,52 @@ package main
 import (
 	"github.com/thoj/go-ircevent"
 	"log"
+	"os"
+	"strings"
 )
 
-func main() {
-	// connect
-	irccon1 := irc.IRC("glisten-tester", "glisten-tester")
-	irccon1.VerboseCallbackHandler = true
-	irccon1.Debug = true // pretty noisy, probably need to squelch it at some point
+// Dump an irc message to the log
+func PrintEvent(e *irc.Event) {
+	channel := e.Arguments[0]
+	nick := e.Nick
+	msg := e.Message()
+	log.Println(channel + " <" + nick + "> " + msg)
+}
 
-	err := irccon1.Connect("irc.freenode.net:6667")
+func main() {
+	if len(os.Args) != 5 {
+		log.Fatal("Usage example: glisten \"irc.freenode.net:6667\" glisten_botnick glisten_botname \"#memtechbot\"")
+	}
+
+	network, nick, username, channel := os.Args[1], os.Args[2], os.Args[3], os.Args[4]
+
+	// connect
+	cnxn := irc.IRC(nick, username)
+
+	debugEnabled := strings.ToLower(strings.Trim(os.Getenv("DEBUG"), " ")) == "true"
+
+	// pretty noisy, probably need to squelch it at some point
+	if debugEnabled {
+		cnxn.VerboseCallbackHandler = true
+		cnxn.Debug = true
+	} else {
+		cnxn.Debug = false
+		cnxn.VerboseCallbackHandler = false
+	}
+
+	// join specified channel on successful network connect
+	cnxn.AddCallback("001", func(e *irc.Event) { cnxn.Join(channel) })
+
+	err := cnxn.Connect(network)
 
 	if err != nil {
 		log.Println(err.Error())
-		log.Fatal("Can't connect to freenode.")
+		log.Fatal("Can't connect to " + network + ".")
 	}
 
-	// 001: Welcome to the network [https://tools.ietf.org/html/rfc2812]
-	irccon1.AddCallback("001", func(e *irc.Event) { irccon1.Join("#memtechbot") })
-
 	// Despite the name, PRIVMSG seems to pass on non-private messages too
-	irccon1.AddCallback("PRIVMSG", func(e *irc.Event) { log.Println("<" + e.Nick + "> " + e.Message()) })
+	cnxn.AddCallback("PRIVMSG", PrintEvent)
 
-	irccon1.Loop()
+	// run until killed
+	cnxn.Loop()
 }
