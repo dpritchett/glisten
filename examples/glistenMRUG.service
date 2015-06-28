@@ -1,0 +1,20 @@
+# this is a systemd script for running glisten via docker on CoreOS
+
+[Unit]
+Description=Glisten IRC listener for #memphisruby
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+# kill running service
+ExecStartPre=-/usr/bin/docker kill glistenMRUG
+ExecStartPre=-/usr/bin/docker rm glistenMRUG
+
+# always grab latest published container
+ExecStartPre=/usr/bin/docker pull dpritchett/glisten:latest
+ExecStart=/usr/bin/docker run --name glistenMRUG dpritchett/glisten "irc.freenode.net:6667" glisten_CoreOS glisten_CoreOS "#memphisruby"
+
+# stop / auto-restart
+ExecStop=/usr/bin/docker stop glistenMRUG
+Restart=always
